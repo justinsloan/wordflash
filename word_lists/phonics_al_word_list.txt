@@ -1,0 +1,12 @@
+all
+hall
+ball
+fall
+small
+wall
+call
+tall
+talk
+walk
+chalk
+stalk
