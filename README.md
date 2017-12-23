@@ -1,6 +1,7 @@
 # Word Flash
 Word Flash is a simple study tool I created to help my daughter
-learn to read.
+learn to read. It currently consists of 38 word lists with 
+1176 sight words and phonics.
 
 ### How to Use Word Flash
 Select the New Session button to start a study session. The first
