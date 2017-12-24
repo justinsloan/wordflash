@@ -55,3 +55,11 @@ section.
 
 Only string values naming .txt files are accepted in the WordFiles
 section.
+
+### FAQ
+**Why use .ini files instead of a database?**
+Even though .ini files are not as efficient as a database, I opted
+to use .ini file for the sake of transparency. The data collected
+is related to very young children, so there is a responsibility
+to keep all information recorded in a transparent, human-readable 
+format.

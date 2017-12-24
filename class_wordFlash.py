@@ -10,7 +10,7 @@ from class_settingsWindow import *
 
 class wordFlash():
 
-    def __init__(self, master, settings):
+    def __init__(self, master, settings, stats):
         '''
         Reads initial settings and creates the user interface.
         '''
@@ -18,6 +18,8 @@ class wordFlash():
         #Capture the settings object for use in the class
         self.settings = settings
         self.getDefaultSettings()
+
+        self.stats = stats
         
         #Instantiates the lastKey variable for use within the class
         self.lastKey = ""
@@ -88,6 +90,9 @@ class wordFlash():
         self.btnReview = Button(self.frameControls, text="Review", command=self._btnReview)
         self.btnReview.config(state=DISABLED)
         self.btnReview.pack(side=LEFT)
+        self.btnStudentStats = Button(self.frameControls, text="Student Stats", command=self._btnStudentStats)
+        self.btnStudentStats.config(state=DISABLED)
+        self.btnStudentStats.pack(side=LEFT)
         self.btnSettings = Button(self.frameControls, text = "Settings" , command = self._btnSettings)
         self.btnSettings.pack(side=LEFT)
         self.btnQuit = Button(self.frameControls, text="Quit", command=self.closeWindow)
@@ -124,15 +129,20 @@ class wordFlash():
     def _btnNewSession(self):
         self.getDefaultSettings()
         self.lblMessage.config(text="")
-        wordList = self._createWordList()
+        wordList = self._createWordList(True) #Pause and show 'Ready!'
         self._startSession(wordList)
     
     
     def _btnReview(self):
         self.lblMessage.config(text="")
         wordList = self.MissedWords
+        self._createWordList(True)  # Pause and show 'Ready!'
         self.lblStatus.config(text="Reading words from: Review List; " + str(len(wordList)) + " words total.")
         self._startSession(wordList)
+
+
+    def _btnStudentStats(self):
+        pass
         
 
     def _btnSettings(self):
@@ -144,7 +154,7 @@ class wordFlash():
         messagebox.showinfo(title, message)
 
 
-    def _createWordList(self):
+    def _createWordList(self, readyWait=False):
         '''
         Creates the WordList by reading files with their setting set
         to True. Returns the WordList as a list for use in a Session.
@@ -174,7 +184,10 @@ class wordFlash():
         if listCount <= 1:
             plural = " list; "
         self.lblStatus.config(text="Reading from " + str(listCount) + plural + str(len(wordList)) + " words total. " + shuffleWords)
-                
+
+        if readyWait:
+            self._displayWord("Ready!")
+
         return wordList
 
 
@@ -231,13 +244,19 @@ class wordFlash():
         self.lblCountIncorrect.config(text="00")
         
         wordCount = len(wordList)
+        missString = ""
 
         for eachWord in wordList:
+            wordCount = wordCount - 1
+            if eachWord in self.stats["MissedWords"].keys():
+                #Get the number of misses for display
+                count = self.stats.get("MissedWords", eachWord)
+                missString = " Missed " + count + " times."
+            msgString = str(wordCount) + " words remaining." + missString
+            missString = "" #Reset the variable so it does not display on the next word.
+            self.lblStatus.config(text=msgString)
             keyPress = self._displayWord(eachWord)
             self._checkKey(keyPress)
-            wordCount = wordCount - 1
-            msgString = str(wordCount) + " words remaining."
-            self.lblStatus.config(text=msgString)
 
         self.lblDisplay.config(text="All done!")
         average = int(100 * (int(self.lblCountCorrect['text']) / int(len(wordList))))
@@ -247,7 +266,25 @@ class wordFlash():
         if not self.MissedWords: #if MissedWords list is empty
             self.btnReview.config(state=DISABLED)
         else:
+            self._saveStats() #Add the missed words the the student's .ini
             self.btnReview.config(state=NORMAL)
+
+
+    def _saveStats(self):
+        wordList = self.MissedWords
+
+        for eachWord in wordList:
+            if eachWord in self.stats["MissedWords"].keys():
+                #Add 1 to the current count
+                count = self.stats.getint("MissedWords", eachWord)
+                count = count + 1
+                self.stats.set("MissedWords", eachWord, str(count))
+            else:
+                #Add a new words with a count of 1
+                self.stats.set("MissedWords", eachWord, "1")
+
+        with open(self.stats.get("Data","file"), "w") as configfile:
+            self.stats.write(configfile)
 
 
     def getDefaultSettings(self):
@@ -255,6 +292,7 @@ class wordFlash():
         self.showStatusBar = self.settings.getboolean("Default","showStatusBar")
         self.showScore = self.settings.getboolean("Default","showScore")
         self.shuffleWords = self.settings.getboolean("Default","shuffleWords")
+
 
     def closeWindow(self):
         self.master.destroy()

@@ -230,15 +230,17 @@ class settingsWindow():
                     offvalue=0).grid(row=10, column=2, sticky=W)
         
         '''
+        #Attempt to dynamically create Checkbuttons for each entry in WordList
         theList = self.settings["WordList"].keys()
         for eachKey in theList:
             if "phonics" in eachKey:
                 Checkbutton(frameActivePhonicsLists,text=eachKey, onvalue=1,
                     offvalue=0).pack(anchor="w")
         '''
-        
+        Button(self.master, text="Change Student", state=DISABLED).grid(row=2, column=0, padx=8, pady=4, sticky=W)
         Button(self.master, text="Okay", command=self._btnOkay).grid(row=2, column=1, padx=8, pady=4, sticky=E)
         self._centerWindow()
+
 
     def _centerWindow(self):
         self.master.update_idletasks()
