@@ -37,6 +37,7 @@ __version__ = "DEV.2"
 import tkinter as tk
 from tkinter import *
 import time
+import logging
 from configparser import ConfigParser
 
 from class_wordFlash import *
@@ -65,12 +66,27 @@ def loadSettings():
     return settings, stats
 
 
+def createLog():
+    """
+    Implements Python logging and returns the log object.
+    """
+    # Set the logging format as (s) strings
+    LOG_FORMAT = "%(levelname)s %(asctime)s - %(message)s"
+
+    # Create and configure the logger
+    logging.basicConfig(filename = "log.txt",
+                        level = logging.DEBUG,
+                        format = LOG_FORMAT,
+                        filemode = "w")
+    logger = logging.getLogger()
+    return logger
+
 def countAll(settings):
-    '''
+    """
     Returns a word count and summary of all word lists
     available. This function has no effect on the program
     and is only used for analysis.
-    '''
+    """
     listCount = 0
     plural = " lists; "
     wordList = []
@@ -96,13 +112,15 @@ def countAll(settings):
     return wordCount, summary
 
 
-# a, b = countAll(loadSettings())
-# print(a)
-# print(b)
+# Prepare the Application
+settings, stats = loadSettings()
+log = createLog()
 
+# Initiate the log file
+a, b = countAll(settings)
+log.info(b)
 
 # Run the Application
-settings, stats = loadSettings()
 root = Tk()
-app = wordFlash(root, settings, stats)
+app = wordFlash(root, settings, stats, log)
 root.mainloop()

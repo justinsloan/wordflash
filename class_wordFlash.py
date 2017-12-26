@@ -10,18 +10,20 @@ from class_settingsWindow import *
 
 class wordFlash():
 
-    def __init__(self, master, settings, stats):
-        '''
+    def __init__(self, master, settings, stats, log):
+        """
         Reads initial settings and creates the user interface.
-        '''
+        """
         
-        #Capture the settings object for use in the class
+        # Capture objects for use in the class
         self.settings = settings
-        self.getDefaultSettings()
-
         self.stats = stats
+        self.log = log
+
+        # Set the Default settings
+        self.getDefaultSettings()
         
-        #Instantiates the lastKey variable for use within the class
+        # Instantiates the lastKey variable for use within the class
         self.lastKey = ""
         
         #Creates the GUI
@@ -41,12 +43,12 @@ class wordFlash():
         self.lblCountIncorrect = Label(self.frameScoreBoard, text=self.lblCountIncorrectVar, fg="red")
         self.lblCountIncorrect.config(font=("Courier", 32))
         self.lblCountIncorrect.grid(row=1, column=0)
-        #Spacers
+        # Spacers
         self.lblScoreLabelSpacer = Label(self.frameScoreBoard)
         self.lblScoreLabelSpacer.grid(row=0, column=1, ipadx=350)
         self.lblScoreCountSpacer = Label(self.frameScoreBoard)
         self.lblScoreCountSpacer.grid(row=1, column=1)
-        #-------
+        # -------
         self.lblCorrect = Label(self.frameScoreBoard, text="Correct")
         self.lblCorrect.grid(row=0, column=2, padx=10)
         self.lblCountCorrectVar = StringVar()
@@ -83,8 +85,8 @@ class wordFlash():
         
 
         self.frameControls = Frame(self.master, width=900)
-        #Place the following widgets in frameControls
-        #-----------------------------------------------------------------------------------------
+        # Place the following widgets in frameControls
+        # -----------------------------------------------------------------------------------------
         self.btnNewSession = Button(self.frameControls, text="New Session", command=self._btnNewSession)
         self.btnNewSession.pack(side=LEFT)
         self.btnReview = Button(self.frameControls, text="Review", command=self._btnReview)
@@ -103,17 +105,18 @@ class wordFlash():
         
         
         self.frameStatusBar = Frame(self.master, width=900)
-        #Place the following widgets in frameStatusBar
-        #------------------------------------------------------------------------------------------
+        # Place the following widgets in frameStatusBar
+        # ------------------------------------------------------------------------------------------
         self.lblStatus = Label(self.frameStatusBar, fg="grey", bd=1, relief=SUNKEN, anchor=W)
         self.lblStatus.pack(fill=X)
-        #------------------------------------------------------------------------------------------
+        # ------------------------------------------------------------------------------------------
         self.frameStatusBar.grid(row=4, sticky=S)
         
         self._createWordList()
     
     
     def _centerWindow(self):
+        """Centers the tk() window on the screen."""
         self.master.update_idletasks()
         width = self.master.winfo_width()
         height = self.master.winfo_height()
@@ -123,13 +126,16 @@ class wordFlash():
     
     
     def _onKey(self, evnt):
+        """Sets a class variable to capture keyboard input"""
         self.lastKey = evnt.keysym
     
     
     def _btnNewSession(self):
-        self.getDefaultSettings()
+        """Checks for changes to settings and then starts a new session"""
+        self.getDefaultSettings() #Check for changes to the settings
         self.lblMessage.config(text="")
         wordList = self._createWordList(True) #Pause and show 'Ready!'
+        self.log.info("New Session started.")
         self._startSession(wordList)
     
     
@@ -138,6 +144,8 @@ class wordFlash():
         wordList = self.MissedWords
         self._createWordList(True)  # Pause and show 'Ready!'
         self.lblStatus.config(text="Reading words from: Review List; " + str(len(wordList)) + " words total.")
+        self.log.info("Review Session started.")
+        self.log.info(self.lblStatus['text'])
         self._startSession(wordList)
 
 
@@ -262,14 +270,17 @@ class wordFlash():
         average = int(100 * (int(self.lblCountCorrect['text']) / int(len(wordList))))
         msgString = "Average: " + str(average) + "%"
         self.lblMessage.config(text=msgString)
+        self.log.info(msgString)
 
         if not self.MissedWords: #if MissedWords list is empty
             self.btnReview.config(state=DISABLED)
             self.lblStatus.config(text="No words missed.")
+            self.log.info(self.lblStatus['text'])
         else:
             self._saveStats() #Add the missed words the the student's .ini
             self.btnReview.config(state=NORMAL)
             self.lblStatus.config(text="Missed " + str(len(self.MissedWords)) + " words.")
+            self.log.info(self.lblStatus['text'])
 
 
     def _saveStats(self):
@@ -293,7 +304,7 @@ class wordFlash():
 
 
     def getDefaultSettings(self):
-        #Get Default Settings
+        """Set the Default Settings based on the .ini"""
         self.showStatusBar = self.settings.getboolean("Default","showStatusBar")
         self.showScore = self.settings.getboolean("Default","showScore")
         self.shuffleWords = self.settings.getboolean("Default","shuffleWords")
