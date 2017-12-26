@@ -262,12 +262,14 @@ class wordFlash():
         average = int(100 * (int(self.lblCountCorrect['text']) / int(len(wordList))))
         msgString = "Average: " + str(average) + "%"
         self.lblMessage.config(text=msgString)
-        
+
         if not self.MissedWords: #if MissedWords list is empty
             self.btnReview.config(state=DISABLED)
+            self.lblDisplay.config(text="No words missed.")
         else:
             self._saveStats() #Add the missed words the the student's .ini
             self.btnReview.config(state=NORMAL)
+            self.lblDisplay.config(text="Missed " + str(len(self.MissedWords)) + " words.")
 
 
     def _saveStats(self):
@@ -283,7 +285,10 @@ class wordFlash():
                 #Add a new words with a count of 1
                 self.stats.set("MissedWords", eachWord, "1")
 
-        with open(self.stats.get("Data","file"), "w") as configfile:
+        fileDirectory = os.path.dirname(os.path.realpath(__file__))
+        studentFilePath = fileDirectory + "/students/" + self.stats.get("Data","file")
+
+        with open(studentFilePath, "w") as configfile:
             self.stats.write(configfile)
 
 

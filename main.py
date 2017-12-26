@@ -21,6 +21,7 @@ __version__ = "DEV.2"
 # TODO: Adjust word list based on prior sessions; easier or harder words
 # TODO: Keep track of multiple students.
 # TODO: Implement 'Instant Feedback' feature
+# TODO: Implement the Select Student window
 # TODO: If no student is set to True, open the Select Student window
 # TODO: Error Detection for bad .ini entries like "Flase" instead of "False"
 # -----------------------------------------------------------------------
@@ -56,7 +57,9 @@ def loadSettings():
     # .ini and reads the appropriate student .ini file.
     for eachKey in settings["Student"].keys():
         if settings.getboolean("Student", eachKey):
-            stats.read(str(eachKey) + ".ini")
+            fileDirectory = os.path.dirname(os.path.realpath(__file__))
+            studentFilePath = fileDirectory + "/students/" + str(eachKey) + ".ini"
+            stats.read(studentFilePath)
             break
 
     return settings, stats
