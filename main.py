@@ -44,10 +44,10 @@ from class_settingsWindow import *
 
 
 def loadSettings():
-    '''
+    """
     Loads all settings from the .ini file.
     Loads student in from the .ini file.
-    '''
+    """
     settings = ConfigParser()
     settings.read("word_flash.ini")
 

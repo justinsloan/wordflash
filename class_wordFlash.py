@@ -265,11 +265,11 @@ class wordFlash():
 
         if not self.MissedWords: #if MissedWords list is empty
             self.btnReview.config(state=DISABLED)
-            self.lblDisplay.config(text="No words missed.")
+            self.lblStatus.config(text="No words missed.")
         else:
             self._saveStats() #Add the missed words the the student's .ini
             self.btnReview.config(state=NORMAL)
-            self.lblDisplay.config(text="Missed " + str(len(self.MissedWords)) + " words.")
+            self.lblStatus.config(text="Missed " + str(len(self.MissedWords)) + " words.")
 
 
     def _saveStats(self):
