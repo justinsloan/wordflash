@@ -112,7 +112,7 @@ def countAll(settings):
     return wordCount, summary
 
 
-# Prepare the Application
+# Prepare the Application objects
 settings, stats = loadSettings()
 log = createLog()
 
