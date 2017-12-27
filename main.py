@@ -16,7 +16,7 @@ __version__ = "DEV.2"
 # Dev.2
 # -----------------------------------------------------------------------
 # TODO: Track frequency of missed words by list, i.e. student has a more
-#      difficul time with the 'third grade' list or 'ai' phonics list.
+#       difficul time with the 'third grade' list or 'ai' phonics list.
 # TODO: Show a Student Stats window
 # TODO: Adjust word list based on prior sessions; easier or harder words
 # TODO: Keep track of multiple students.
@@ -47,7 +47,7 @@ from class_settingsWindow import *
 def loadSettings():
     """
     Loads all settings from the .ini file.
-    Loads student in from the .ini file.
+    Loads student info from the .ini file.
     """
     settings = ConfigParser()
     settings.read("word_flash.ini")
@@ -59,7 +59,7 @@ def loadSettings():
     for eachKey in settings["Student"].keys():
         if settings.getboolean("Student", eachKey):
             fileDirectory = os.path.dirname(os.path.realpath(__file__))
-            studentFilePath = fileDirectory + "/students/" + str(eachKey) + ".ini"
+            studentFilePath = f"{fileDirectory}/students/{str(eachKey)}.ini"
             stats.read(studentFilePath)
             break
 
@@ -88,13 +88,13 @@ def countAll(settings):
     and is only used for analysis.
     """
     listCount = 0
-    plural = " lists; "
+    plural = "lists;"
     wordList = []
 
     for eachKey in settings["WordList"].keys():
-        wordFile = settings.get("WordFiles", eachKey + "File")
+        wordFile = settings.get("WordFiles", f"{eachKey}File")
         fileDirectory = os.path.dirname(os.path.realpath(__file__))
-        wordFilePath = fileDirectory + "/word_lists/" + wordFile
+        wordFilePath = f"{fileDirectory}/word_lists/{wordFile}"
 
         with open(wordFilePath) as f:
             for line in f.readlines():
@@ -104,10 +104,10 @@ def countAll(settings):
         listCount = listCount + 1
 
     if listCount <= 1:
-        plural = " list; "
+        plural = "list;"
 
     wordCount = len(wordList)
-    summary = "Reading from " + str(listCount) + plural + str(wordCount) + " words total."
+    summary = f"Reading from {str(listCount)} {plural} {str(wordCount)} words total."
 
     return wordCount, summary
 

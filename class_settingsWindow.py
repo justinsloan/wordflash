@@ -4,10 +4,10 @@
 
 from tkinter import *
 
-class settingsWindow():
-
+class SettingsWindow():
+    """Provides GUI to change Word Flash settings."""
     def __init__(self , master, settings):
-        
+        """Constructor for the class. Implements the GUI."""
         #Capture the settings for use
         self.settings = settings
         
@@ -243,6 +243,7 @@ class settingsWindow():
 
 
     def _centerWindow(self):
+        """Centers the tk() window on the screen."""
         self.master.update_idletasks()
         width = self.master.winfo_width()
         height = self.master.winfo_height()
@@ -252,9 +253,7 @@ class settingsWindow():
         
         
     def saveSettings(self):
-        '''
-        Captures all changes to settings and saves to the .ini file.
-        '''
+        """Captures all changes to settings and saves to the .ini file."""
         if self.checkPrimer.get():
             self.settings.set("WordList", "primerWordList", "True")
         else:

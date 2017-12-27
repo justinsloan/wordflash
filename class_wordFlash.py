@@ -154,8 +154,8 @@ class wordFlash():
         
 
     def _btnSettings(self):
-        self.settingsWindow = Toplevel(self.master)
-        self.app = settingsWindow(self.settingsWindow, self.settings)
+        self.SettingsWindow = Toplevel(self.master)
+        self.app = SettingsWindow(self.SettingsWindow, self.settings)
                 
 
     def _infoBox(self, message, title="Word Flash"):
@@ -163,22 +163,22 @@ class wordFlash():
 
 
     def _createWordList(self, readyWait=False):
-        '''
+        """
         Creates the WordList by reading files with their setting set
         to True. Returns the WordList as a list for use in a Session.
-        '''
+        """
         listCount = 0
         wordList = []
-        plural = " lists; "
+        plural = "lists;"
         shuffleWords = ""
         if self.shuffleWords == True:
-            shuffleWords = "(Shuffled)"
+            shuffleWords = " (Shuffled)"
         
         for eachKey in self.settings["WordList"].keys():
             if self.settings.getboolean("WordList",eachKey) == True:
-                wordFile = self.settings.get("WordFiles",eachKey + "File")
+                wordFile = self.settings.get("WordFiles",f"{eachKey}File")
                 fileDirectory = os.path.dirname(os.path.realpath(__file__))
-                wordFilePath = fileDirectory + "/word_lists/" + wordFile
+                wordFilePath = f"{fileDirectory}/word_lists/{wordFile}"
 
                 with open(wordFilePath) as f:
                     for line in f.readlines():
@@ -190,8 +190,9 @@ class wordFlash():
                 listCount = listCount + 1
         
         if listCount <= 1:
-            plural = " list; "
-        self.lblStatus.config(text="Reading from " + str(listCount) + plural + str(len(wordList)) + " words total. " + shuffleWords)
+            plural = "list;"
+        msgStatus = f"Reading from {str(listCount)} {plural} {str(len(wordList))} words total.{shuffleWords}"
+        self.lblStatus.config(text=msgStatus)
 
         if readyWait:
             self._displayWord("Ready!")
@@ -200,10 +201,10 @@ class wordFlash():
 
 
     def _displayWord(self,theWord):
-        '''
+        """
         Displays the word provided and waits for the user to press
         either the LEFT or RIGHT arrow key before continuing.
-        '''
+        """
         self.lblDisplay.config(text=theWord)
 
         theKey = ""
@@ -218,12 +219,12 @@ class wordFlash():
 
 
     def _checkKey(self, theKey):
-        '''
+        """
         Checks to see which key was pressed, Left or Right, and then
         either adds one point to the Correct score or one point to the
         incorrect score. The variable 'score' is used as the accumulator,
         but the number is stored as a string in the label.
-        '''
+        """
         score = 0
         if theKey == "Left":
             score = self.lblCountIncorrect['text']
@@ -239,11 +240,11 @@ class wordFlash():
                 
 
     def _startSession(self, wordList):
-        '''
+        """
         Plays a Flash Word game by displaying each word in the WordList
         array. After all words have been displayed an average is
         calculated and shown to the user.
-        '''
+        """
         self.lastKey = ""
         
         self.MissedWords = []
@@ -259,8 +260,8 @@ class wordFlash():
             if eachWord in self.stats["MissedWords"].keys():
                 #Get the number of misses for display
                 count = self.stats.get("MissedWords", eachWord)
-                missString = " Missed " + count + " times."
-            msgString = str(wordCount) + " words remaining." + missString
+                missString = f" Missed {count} times."
+            msgString = f"{str(wordCount)} words remaining.{missString}"
             missString = "" #Reset the variable so it does not display on the next word.
             self.lblStatus.config(text=msgString)
             keyPress = self._displayWord(eachWord)
@@ -268,7 +269,7 @@ class wordFlash():
 
         self.lblDisplay.config(text="All done!")
         average = int(100 * (int(self.lblCountCorrect['text']) / int(len(wordList))))
-        msgString = "Average: " + str(average) + "%"
+        msgString = f"Average: {str(average)}%"
         self.lblMessage.config(text=msgString)
         self.log.info(msgString)
 
@@ -279,7 +280,7 @@ class wordFlash():
         else:
             self._saveStats() #Add the missed words the the student's .ini
             self.btnReview.config(state=NORMAL)
-            self.lblStatus.config(text="Missed " + str(len(self.MissedWords)) + " words.")
+            self.lblStatus.config(text=f"Missed {str(len(self.MissedWords))} words.")
             self.log.info(self.lblStatus['text'])
 
 
@@ -297,7 +298,8 @@ class wordFlash():
                 self.stats.set("MissedWords", eachWord, "1")
 
         fileDirectory = os.path.dirname(os.path.realpath(__file__))
-        studentFilePath = fileDirectory + "/students/" + self.stats.get("Data","file")
+        theFile = self.stats.get("Data","file")
+        studentFilePath = f"{fileDirectory}/students/{theFile}"
 
         with open(studentFilePath, "w") as configfile:
             self.stats.write(configfile)
