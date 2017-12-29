@@ -6,6 +6,7 @@ from tkinter import *
 
 class SettingsWindow():
     """Provides GUI to change Word Flash settings."""
+
     def __init__(self , master, settings):
         """Constructor for the class. Implements the GUI."""
         #Capture the settings for use
@@ -15,8 +16,11 @@ class SettingsWindow():
         self.frame = Frame(master)
         self.master.title("Settings")
 
+        #grid.columnconfigure(grid, x, weight=1)
+        #grid.columnconfigure(grid, y, weight=1)
+
         frameActiveWordLists = LabelFrame(self.master, text="Sight Words")
-        frameActiveWordLists.grid(row=0, column=0, sticky=N, padx=8, ipadx=8, pady=8, ipady=8)
+        frameActiveWordLists.grid(row=0, column=0, sticky=N+S+E+W, padx=8, ipadx=8, pady=8, ipady=8)
 
         self.checkPrimer = IntVar()
         self.checkPrimer.set(int(self.settings.getboolean("WordList","primerWordList")))
@@ -40,7 +44,7 @@ class SettingsWindow():
                     offvalue=0).pack(anchor="w")
 
         frameDisplayOptions = LabelFrame(self.master, text="Display Options")
-        frameDisplayOptions.grid(row=0, column=1, sticky=N, padx=8, ipadx=8, pady=8, ipady=8)
+        frameDisplayOptions.grid(row=0, column=1, sticky=N+S+E+W, padx=8, ipadx=8, pady=8, ipady=8)
 
         self.checkShowScore = IntVar()
         self.checkShowScore.set(int(self.settings.getboolean("Default","showScore")))
@@ -62,7 +66,7 @@ class SettingsWindow():
 
 
         frameActivePhonicsLists = LabelFrame(self.master, text="Phonics")
-        frameActivePhonicsLists.grid(row=1, column=0, columnspan=2, padx=8, ipadx=8, pady=8, ipady=4)
+        frameActivePhonicsLists.grid(row=1, column=0, columnspan=2, sticky=N+S+E+W,padx=8, ipadx=8, pady=8, ipady=4)
         
         self.checkPhonicsAIWordList = IntVar()
         self.checkPhonicsAIWordList.set(int(self.settings.getboolean("WordList","phonicsaiwordlist")))
@@ -238,6 +242,7 @@ class SettingsWindow():
                     offvalue=0).pack(anchor="w")
         '''
         Button(self.master, text="Change Student", state=DISABLED).grid(row=2, column=0, padx=8, pady=4, sticky=W)
+        Button(self.master, text="Insight Report", state=DISABLED).grid(row=2, column=0, padx=8, pady=4)
         Button(self.master, text="Okay", command=self._btnOkay).grid(row=2, column=1, padx=8, pady=4, sticky=E)
         self._centerWindow()
 

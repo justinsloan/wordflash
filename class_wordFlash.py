@@ -26,12 +26,15 @@ class wordFlash():
         # Instantiates the lastKey variable for use within the class
         self.lastKey = ""
         
-        #Creates the GUI
+        # Creates the GUI
         self.master = master
         self.master.title("Word Flash Dev.2")
         self.master.geometry("900x450")
         self._centerWindow()
-        self.master.bind("<Key>", self._onKey) #Binds the window to capture keyboard input
+        #self.master.attributes('-fullscreen',
+        #                   True)  # This just maximizes it so we can see the window. It's nothing to do with fullscreen.
+        #self.master.bind("<Escape>", self.master.destroy)
+        self.master.bind("<Key>", self._onKey) # Binds the window to capture all keyboard input
 
         self.frameScoreBoard = Frame(self.master)
         # Place the following widgets in frameScore
@@ -45,7 +48,7 @@ class wordFlash():
         self.lblCountIncorrect.grid(row=1, column=0)
         # Spacers
         self.lblScoreLabelSpacer = Label(self.frameScoreBoard)
-        self.lblScoreLabelSpacer.grid(row=0, column=1, ipadx=350)
+        self.lblScoreLabelSpacer.grid(row=0, column=1, ipadx=360)
         self.lblScoreCountSpacer = Label(self.frameScoreBoard)
         self.lblScoreCountSpacer.grid(row=1, column=1)
         # -------
@@ -57,34 +60,33 @@ class wordFlash():
         self.lblCountCorrect.config(font=("Courier", 32))
         self.lblCountCorrect.grid(row=1, column=2)
         # -----------------------------------------------------------------------------------------
-        #self.frameScoreBoard.pack(expand=TRUE, fill=X)  # Prepare and display frameScore
         if self.showScore:
-            self.frameScoreBoard.grid(row=0, padx=10)
+            self.frameScoreBoard.grid(row=0, sticky=N+S+E+W, padx=10)
+            #self.frameScoreBoard.pack(fill=BOTH,expand=1)  # Prepare and display frameScore
 
-
-        self.frameDisplay = Frame(self.master, width=900)
+        self.frameDisplay = Frame(self.master)
         # Place the following widgets in frameDisplay
         # -----------------------------------------------------------------------------------------
         self.lblDisplay = Label(self.frameDisplay, text="Word Flash")
         self.lblDisplay.config(font=("Times New Roman", 88))
         self.lblDisplay.pack()
         # -----------------------------------------------------------------------------------------
-        #self.frameDisplay.pack(expand=TRUE, fill=BOTH)  # Prepare and display frameDisplay
-        self.frameDisplay.grid(row=1, pady=75)
+        #self.frameDisplay.pack(fill=BOTH,expand=1)  # Prepare and display frameDisplay
+        self.frameDisplay.grid(row=1, sticky=N+S+E+W, pady=75)
         
 
-        self.frameMessage = Frame(self.master, width=900)
+        self.frameMessage = Frame(self.master)
         # Place the following widgets in frameControls
         # -----------------------------------------------------------------------------------------
         self.lblMessage = Label(self.frameMessage, text="Click New Session to start.")
         self.lblMessage.config(font=("Helvetica", 26))
         self.lblMessage.pack()
         # -----------------------------------------------------------------------------------------
-        #self.frameMessage.pack(expand=TRUE, fill=X) #Prepare and display frameMessage
-        self.frameMessage.grid(row=2)
-        
+        #self.frameMessage.pack(fill=X, expand=1) #Prepare and display frameMessage
+        self.frameMessage.grid(row=2, sticky=E+W, pady=8)
 
-        self.frameControls = Frame(self.master, width=900)
+
+        self.frameControls = Frame(self.master)
         # Place the following widgets in frameControls
         # -----------------------------------------------------------------------------------------
         self.btnNewSession = Button(self.frameControls, text="New Session", command=self._btnNewSession)
@@ -100,17 +102,18 @@ class wordFlash():
         self.btnQuit = Button(self.frameControls, text="Quit", command=self.closeWindow)
         self.btnQuit.pack(side=LEFT)
         # -----------------------------------------------------------------------------------------
-        #self.frameControls.pack(expand=TRUE, side=BOTTOM) #Prepare and display frameControls
-        self.frameControls.grid(row=3)
-        
-        
-        self.frameStatusBar = Frame(self.master, width=900)
+        #self.frameControls.pack(fill=X) #Prepare and display frameControls
+        self.frameControls.grid(row=3, pady=8)
+
+
+        self.frameStatusBar = Frame(self.master)
         # Place the following widgets in frameStatusBar
         # ------------------------------------------------------------------------------------------
-        self.lblStatus = Label(self.frameStatusBar, fg="grey", bd=1, relief=SUNKEN, anchor=W)
-        self.lblStatus.pack(fill=X)
+        self.lblStatus = Label(self.frameStatusBar, fg="grey", bd=1, relief=SUNKEN)
+        self.lblStatus.pack(side=BOTTOM, fill=X)
         # ------------------------------------------------------------------------------------------
-        self.frameStatusBar.grid(row=4, sticky=S)
+        self.frameStatusBar.grid(row=4, sticky=S+E+W)
+        #self.frameStatusBar.pack(fill=X,expand=1, side=BOTTOM)
         
         self._createWordList()
     
