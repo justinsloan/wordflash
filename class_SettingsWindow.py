@@ -3,6 +3,7 @@
 #This module is part of the "Word Flash" program
 
 from tkinter import *
+from class_SelectStudentWindow import *
 
 class SettingsWindow():
     """Provides GUI to change Word Flash settings."""
@@ -241,7 +242,7 @@ class SettingsWindow():
                 Checkbutton(frameActivePhonicsLists,text=eachKey, onvalue=1,
                     offvalue=0).pack(anchor="w")
         '''
-        Button(self.master, text="Change Student", state=DISABLED).grid(row=2, column=0, padx=8, pady=4, sticky=W)
+        Button(self.master, text="Change Student",  command=self._btnChangeStudent).grid(row=2, column=0, padx=8, pady=4, sticky=W)
         Button(self.master, text="Insight Report", state=DISABLED).grid(row=2, column=0, padx=8, pady=4)
         Button(self.master, text="Okay", command=self._btnOkay).grid(row=2, column=1, padx=8, pady=4, sticky=E)
         self._centerWindow()
@@ -478,6 +479,11 @@ class SettingsWindow():
     def _btnOkay(self):
         self.saveSettings()
         self.closeWindow()
+
+
+    def _btnChangeStudent(self):
+        self.SelectStudentWindow = Toplevel(self.master)
+        self.app = SelectStudentWindow(self.SelectStudentWindow, self.settings)
         
 
     def closeWindow(self):

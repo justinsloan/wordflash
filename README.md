@@ -1,7 +1,19 @@
 # Word Flash
-Word Flash is a simple study tool I created to help my daughter
-learn to read. It currently consists of 38 word lists with 
-1176 sight words and phonics.
+> A simple flash card style study tool I created to help my daughter
+learn to read.
+
+### *New Python developers are welcome and encouraged to contribute to this project!*
+
+### Features
+- 38 word lists with 1174 sight words and phonics
+- Flash card style interface
+- Student progress tracking
+- Fully customizable Word Lists
+
+*Planned Features*
+- Support for multiple students
+- Student progress & trend analysis
+- Dynamic Word List creation based on student progress
 
 ### How to Use Word Flash
 Select the New Session button to start a study session. The first
@@ -31,7 +43,7 @@ you mind, you can cancel your changes by simply clicking the
 close (X) button of the Settings window.
 
 ***NOTE:** You must restart Word Flash to show or hide the Score
-Board or Status Bar.*
+Board or Status Bar. A bug issue has been created.*
 
 ### Advanced Customization
 You can make changes to the standard Word Lists and even add your
@@ -56,10 +68,15 @@ section.
 Only string values naming .txt files are accepted in the WordFiles
 section.
 
+***NOTE:** Double check any changes made to the .ini files as there
+is currently no error checking for bad entries.*
+
 ### FAQ
-**Why use .ini files instead of a database?**
+**Why use .ini files instead of a database (or JSON)?**
 Even though .ini files are not as efficient as a database, I opted
-to use .ini file for the sake of transparency. The data collected
+to use .ini files for the sake of transparency. The data collected
 is related to very young children, so there is a responsibility
 to keep all information recorded in a transparent, human-readable 
-format.
+format. Formats like JSON are more efficient, but I also need the
+files to be easily editable by non-technical teachers/instructors.
+I'm currently looking into possibilities with CSV files.

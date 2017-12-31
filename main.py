@@ -13,24 +13,9 @@ reading and spelling difficulties.
 '''
 __version__ = "DEV.2"
 
-# Dev.2
-# -----------------------------------------------------------------------
-# TODO: Track frequency of missed words by list, i.e. student has a more
-#       difficul time with the 'third grade' list or 'ai' phonics list.
-# TODO: Show a Student Stats window
-# TODO: Adjust word list based on prior sessions; easier or harder words
-# TODO: Keep track of multiple students.
-# TODO: Implement 'Instant Feedback' feature
-# TODO: Implement the Select Student window
-# TODO: If no student is set to True, open the Select Student window
-# TODO: Error Detection for bad .ini entries like "Flase" instead of "False"
+# To_Do for my Branch (should be empty before every Push/Pull request)
 # -----------------------------------------------------------------------
 
-# Bug Fixes
-# -----------------------------------------------------------------------
-# TODO: Status bar does not stretch across the entire window
-# TODO: Settings do not affect status bar showing
-# TODO: Buttons on the Main window should all be the same size
 # -----------------------------------------------------------------------
 
 
@@ -40,8 +25,9 @@ import time
 import logging
 from configparser import ConfigParser
 
-from class_wordFlash import *
-from class_settingsWindow import *
+from class_WordFlash import *
+from class_SettingsWindow import *
+from class_SelectStudentWindow import *
 
 
 def loadSettings():

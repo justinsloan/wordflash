@@ -6,7 +6,8 @@ from tkinter import *
 from tkinter import messagebox
 import os, random, time
 
-from class_settingsWindow import *
+from class_SettingsWindow import *
+from class_SelectStudentWindow import *
 
 class wordFlash():
 
