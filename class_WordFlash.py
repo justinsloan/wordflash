@@ -302,11 +302,27 @@ class wordFlash():
                 self.stats.set("MissedWords", eachWord, "1")
 
         fileDirectory = os.path.dirname(os.path.realpath(__file__))
-        theFile = self.stats.get("Data","file")
+        theFile = self.getCurrentStudent() + ".ini"
         studentFilePath = f"{fileDirectory}/students/{theFile}"
 
         with open(studentFilePath, "w") as configfile:
             self.stats.write(configfile)
+
+
+    def getCurrentStudent(self):
+        """
+        Checks which student key in settings is set to True and returns
+        the value as a string
+        """
+        currentStudent = ""
+
+        # Checks for which student key is set to True  in the settings
+        for eachKey in self.settings["Student"].keys():
+            if self.settings.getboolean("Student", eachKey):
+                currentStudent = eachKey
+                break
+
+        return currentStudent
 
 
     def getDefaultSettings(self):

@@ -5,7 +5,7 @@ learn to read.
 ### *New Python developers are welcome and encouraged to contribute to this project!*
 
 ### Features
-- 38 word lists with 1174 sight words and phonics
+- 38 word lists with 1174 sight words and phonics combinations
 - Flash card style interface
 - Student progress tracking
 - Fully customizable Word Lists
