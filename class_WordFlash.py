@@ -117,6 +117,7 @@ class wordFlash():
         #self.frameStatusBar.pack(fill=X,expand=1, side=BOTTOM)
         
         self._createWordList()
+        self.getCurrentStudent()
     
     
     def _centerWindow(self):
@@ -132,6 +133,15 @@ class wordFlash():
     def _onKey(self, evnt):
         """Sets a class variable to capture keyboard input"""
         self.lastKey = evnt.keysym
+
+
+    def _formatStudentName(self, format_name):
+        """Returns the name in 'FirstL' format"""
+        first_upper = format_name[0].upper()  # Get the first character as uppercase
+        last_upper = format_name[-1].upper()  # Get the last character as uppercase
+        middle_string = format_name[1:-1]  # Get everything between the first and last character
+        the_student = first_upper + middle_string + last_upper  # Concat the strings
+        return the_student
     
     
     def _btnNewSession(self):
@@ -322,6 +332,7 @@ class wordFlash():
                 currentStudent = eachKey
                 break
 
+        self.log.info(f"Current student: {self._formatStudentName(currentStudent)}")
         return currentStudent
 
 

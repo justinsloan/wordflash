@@ -67,6 +67,7 @@ def createLog():
     logger = logging.getLogger()
     return logger
 
+
 def countAll(settings):
     """
     Returns a word count and summary of all word lists
@@ -104,7 +105,7 @@ log = createLog()
 
 # Initiate the log file
 a, b = countAll(settings)
-log.info(b)
+log.info(b)               # Word List data summary
 
 # Run the Application
 root = Tk()
