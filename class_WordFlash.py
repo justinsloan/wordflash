@@ -8,6 +8,7 @@ import os, random, time
 
 from class_SettingsWindow import *
 from class_SelectStudentWindow import *
+#from test_class import Test
 
 class wordFlash():
 
@@ -74,6 +75,7 @@ class wordFlash():
         # -----------------------------------------------------------------------------------------
         #self.frameDisplay.pack(fill=BOTH,expand=1)  # Prepare and display frameDisplay
         self.frameDisplay.grid(row=1, sticky=N+S+E+W, pady=75)
+        #Test(self.frameDisplay)
         
 
         self.frameMessage = Frame(self.master)

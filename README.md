@@ -15,6 +15,8 @@ learn to read.
 - Student progress & trend analysis
 - Dynamic Word List creation based on student progress
 
+![](main.png)
+
 ### How to Use Word Flash
 Select the New Session button to start a study session. The first
 word from the active word lists will be shown. After the student
