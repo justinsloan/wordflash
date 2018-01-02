@@ -3,6 +3,9 @@
 #This module is part of the "Word Flash" program
 
 from tkinter import *
+import matplotlib
+matplotlib.use("TkAgg")
+import matplotlib.pyplot as plot
 from class_SelectStudentWindow import *
 
 class SettingsWindow():
@@ -243,7 +246,7 @@ class SettingsWindow():
                     offvalue=0).pack(anchor="w")
         '''
         Button(self.master, text="Change Student",  command=self._btnChangeStudent).grid(row=2, column=0, padx=8, pady=4, sticky=W)
-        Button(self.master, text="Insight Report", state=DISABLED).grid(row=2, column=0, padx=8, pady=4)
+        Button(self.master, text="Student Report", command=self._btnStudentReport).grid(row=2, column=0, padx=8, pady=4)
         Button(self.master, text="Okay", command=self._btnOkay).grid(row=2, column=1, padx=8, pady=4, sticky=E)
         self._centerWindow()
 
@@ -484,7 +487,11 @@ class SettingsWindow():
     def _btnChangeStudent(self):
         self.SelectStudentWindow = Toplevel(self.master)
         self.app = SelectStudentWindow(self.SelectStudentWindow, self.settings)
-        
+
+    def _btnStudentReport(self):
+        a = [1,3,5,7,5,3,1]
+        plot.plot(a)
+        plot.show()
 
     def closeWindow(self):
         self.master.destroy()
