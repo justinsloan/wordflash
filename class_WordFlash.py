@@ -4,6 +4,7 @@
 
 from tkinter import *
 from tkinter import messagebox
+from wordanalysis import *
 import os, random, time
 
 from class_SettingsWindow import *
@@ -200,6 +201,9 @@ class wordFlash():
                     for line in f.readlines():
                         newWord = line.strip()
                         wordList.append(newWord)
+                        syllables = countSyllables(newWord)
+                        if syllables == 0:
+                            self.log.debug(f"'{newWord}' has {syllables} syllables")
                         newWord = ""
                 if self.shuffleWords == True:
                     random.shuffle(wordList)

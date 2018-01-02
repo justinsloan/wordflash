@@ -1,12 +1,13 @@
 # !/usr/bin/env python3
-#class_settingWindow.py
-#This module is part of the "Word Flash" program
+# class_settingWindow.py
+# This module is part of the "Word Flash" program
 
 from tkinter import *
 import matplotlib
 matplotlib.use("TkAgg")
 import matplotlib.pyplot as plot
 from class_SelectStudentWindow import *
+import wordanalysis
 
 class SettingsWindow():
     """Provides GUI to change Word Flash settings."""
