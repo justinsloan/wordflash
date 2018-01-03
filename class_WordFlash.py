@@ -174,29 +174,27 @@ class wordFlash():
 
 
     def _btnStudentStats(self):
-        list = [0]
-        sorted_list = []
-        words = self.stats["MissedWords"].keys() # Retrieve the missed words list
-        for eachWord in words:
-            value = int(self.stats.get("MissedWords", eachWord))
-            if value > int(list[-1]):
-                list.append(value)
-                sorted(list)
-            print(list)
+        word_list = self.topMissedWords(6)
+        graph_list = []
 
-        # Sort by value
+        for eachWord in word_list:
+            count, word = eachWord.split(":")
+            for i in range(0,int(count)):
+                graph_list.append(word)
+
+        # Graphs by frequency in the list
         # a = ['a','a','b','b','b','c','c','c']
 
-        #a = sorted_list[:5]
-        #print(a)
-        #plot.hist(a)
-        #plot.show()
+        a = graph_list
+        print(a)
+        plot.hist(a)
+        plot.show()
         
 
     def _btnSettings(self):
         self.SettingsWindow = Toplevel(self.master)
         self.app = SettingsWindow(self.SettingsWindow, self.settings)
-                
+
 
     def _infoBox(self, message, title="Word Flash"):
         messagebox.showinfo(title, message)
@@ -224,7 +222,7 @@ class wordFlash():
                     for line in f.readlines():
                         newWord = line.strip()
                         wordList.append(newWord)
-                        syllables = countSyllables(newWord)
+                        syllables = count_syllables(newWord)
                         if syllables == 0:
                             self.log.debug(f"'{newWord}' has {syllables} syllables")
                         newWord = ""
@@ -348,11 +346,27 @@ class wordFlash():
             self.stats.write(configfile)
 
 
+    def topMissedWords(self, max_count=5):
+        """Returns a list with items 'Frequency:Word' from the student .ini
+        file MissedWords section"""
+        list = ['0:none']
+        missed_words = self.stats["MissedWords"].keys()  # Retrieve the missed words list
+
+        for eachWord in missed_words:
+            list = sorted(list)
+            value = int(self.stats.get("MissedWords", eachWord))
+            low = int(list[0].split(":")[0])
+            if value >= low:
+                if len(list) == max_count:
+                    del list[0]
+                list.append(f"{str(value)}:{eachWord}")
+
+        return list
+
+
     def getCurrentStudent(self):
-        """
-        Checks which student key in settings is set to True and returns
-        the value as a string
-        """
+        """Checks which student key in settings is set to True and
+        returns the value as a string"""
         currentStudent = ""
 
         # Checks for which student key is set to True  in the settings

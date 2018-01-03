@@ -6,7 +6,7 @@ This module provides functions to analyze student progress and help determine
 areas where the student in struggling.
 """
 
-def countSyllables(word):
+def count_syllables(word):
     """Returns the number of syllables in the word provided."""
     vowels = "aeiouy"
     count = 0
@@ -40,3 +40,9 @@ def countSyllables(word):
         count += 1
 
     return count
+
+
+def phonics_frequency(list):
+    """Returns a tuple containing a count of the vowel combinations and
+     consoant blends."""
+    pass
