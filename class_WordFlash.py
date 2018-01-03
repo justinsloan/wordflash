@@ -4,12 +4,20 @@
 
 from tkinter import *
 from tkinter import messagebox
-from wordanalysis import *
-import os, random, time
 
+import matplotlib
+matplotlib.use("TkAgg")
+import matplotlib.pyplot as plot
+
+import os
+import random
+import time
+import pandas
+
+from wordanalysis import *
 from class_SettingsWindow import *
 from class_SelectStudentWindow import *
-#from test_class import Test
+
 
 class wordFlash():
 
@@ -99,7 +107,6 @@ class wordFlash():
         self.btnReview.config(state=DISABLED)
         self.btnReview.pack(side=LEFT)
         self.btnStudentStats = Button(self.frameControls, text="Student Stats", command=self._btnStudentStats)
-        self.btnStudentStats.config(state=DISABLED)
         self.btnStudentStats.pack(side=LEFT)
         self.btnSettings = Button(self.frameControls, text = "Settings" , command = self._btnSettings)
         self.btnSettings.pack(side=LEFT)
@@ -167,7 +174,23 @@ class wordFlash():
 
 
     def _btnStudentStats(self):
-        pass
+        list = [0]
+        sorted_list = []
+        words = self.stats["MissedWords"].keys() # Retrieve the missed words list
+        for eachWord in words:
+            value = int(self.stats.get("MissedWords", eachWord))
+            if value > int(list[-1]):
+                list.append(value)
+                sorted(list)
+            print(list)
+
+        # Sort by value
+        # a = ['a','a','b','b','b','c','c','c']
+
+        #a = sorted_list[:5]
+        #print(a)
+        #plot.hist(a)
+        #plot.show()
         
 
     def _btnSettings(self):
