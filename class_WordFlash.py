@@ -4,7 +4,7 @@
 
 from tkinter import *
 from tkinter import messagebox
-
+import numpy
 import matplotlib
 matplotlib.use("TkAgg")
 import matplotlib.pyplot as plot
@@ -12,7 +12,6 @@ import matplotlib.pyplot as plot
 import os
 import random
 import time
-import pandas
 
 from wordanalysis import *
 from class_SettingsWindow import *
@@ -174,20 +173,35 @@ class wordFlash():
 
 
     def _btnStudentStats(self):
-        word_list = self.topMissedWords(6)
-        graph_list = []
+        top = 12
+        high = 0
+        word_list = self.topMissedWords(top)
+        syllables = 0
+        split_counts = []
+        split_words = []
 
+        # Prepare data lists
         for eachWord in word_list:
             count, word = eachWord.split(":")
-            for i in range(0,int(count)):
-                graph_list.append(word)
+            count = int(count)
+            split_counts.append(count)
+            split_words.append(word)
+            syllables += count_syllables(word)
+            if count > high:
+                high = count
 
-        # Graphs by frequency in the list
-        # a = ['a','a','b','b','b','c','c','c']
+        syllables = syllables / top # Calculate average syllables per word
+        high += 1
 
-        a = graph_list
-        print(a)
-        plot.hist(a)
+        # Create the graph
+        x = numpy.arange(top)
+        plot.bar(x, split_counts)
+        plot.xticks(x, split_words)
+        #plot.figure(figsize=(6*3.13,4*3.13))
+        plot.gcf().canvas.set_window_title("Student Stats")
+        plot.title(f"Top {top} Missed Words")
+        plot.xlabel(f"Words (Average Syllables: {syllables})")
+        plot.ylabel("# Times Missed")
         plot.show()
         
 

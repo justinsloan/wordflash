@@ -11,7 +11,7 @@ If the words the student frequently misses use the same or
 similar phonics sounds then you can more precisely remedy
 reading and spelling difficulties.
 '''
-__version__ = "DEV.2"
+__version__ = "Dev.2"
 
 # To_Do for my Branch (should be empty before every Push/Pull request)
 # -----------------------------------------------------------------------
