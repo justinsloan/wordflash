@@ -192,13 +192,15 @@ class wordFlash():
 
         syllables = syllables / top # Calculate average syllables per word
         high += 1
+        student = self.getCurrentStudent()
+        student = self._formatStudentName(student)
 
         # Create the graph
         x = numpy.arange(top)
         plot.bar(x, split_counts)
         plot.xticks(x, split_words)
         #plot.figure(figsize=(6*3.13,4*3.13))
-        plot.gcf().canvas.set_window_title("Student Stats")
+        plot.gcf().canvas.set_window_title(f"Student Stats ({student})")
         plot.title(f"Top {top} Missed Words")
         plot.xlabel(f"Words (Average Syllables: {syllables})")
         plot.ylabel("# Times Missed")
@@ -361,7 +363,7 @@ class wordFlash():
 
 
     def topMissedWords(self, max_count=5):
-        """Returns a list with items 'Frequency:Word' from the student .ini
+        """Returns a list with items 'Frequency:Word' as strings from the student .ini
         file MissedWords section"""
         list = ['0:none']
         missed_words = self.stats["MissedWords"].keys()  # Retrieve the missed words list
