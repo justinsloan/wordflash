@@ -8,6 +8,7 @@ import numpy
 import matplotlib
 matplotlib.use("TkAgg")
 import matplotlib.pyplot as plot
+from phonics_lexer import *
 
 import os
 import random
@@ -173,12 +174,13 @@ class wordFlash():
 
 
     def _btnStudentStats(self):
-        top = 12
-        high = 0
-        word_list = self.topMissedWords(top)
-        syllables = 0
-        split_counts = []
-        split_words = []
+        #Prepare the variables
+        top = 12                             # Number of words to get
+        high = 0                             # Tracks highest miss count
+        word_list = self.topMissedWords(top) # Gets N words from MissedWords section
+        syllables = 0                        # Total syllable count for all words
+        split_counts = []                    # Dict with only count from word_list
+        split_words = []                     # Dict with only words from word_list
 
         # Prepare data lists
         for eachWord in word_list:
@@ -195,12 +197,16 @@ class wordFlash():
         student = self.getCurrentStudent()
         student = self._formatStudentName(student)
 
+        # Analyze Phonics
+        lex = PhonicsLexer(split_words)
+        phonics = lex.tokenize()
+
         # Create the graph
         x = numpy.arange(top)
         plot.bar(x, split_counts)
         plot.xticks(x, split_words)
         #plot.figure(figsize=(6*3.13,4*3.13))
-        plot.gcf().canvas.set_window_title(f"Student Stats ({student})")
+        plot.gcf().canvas.set_window_title(f"Student Stats for {student}")
         plot.title(f"Top {top} Missed Words")
         plot.xlabel(f"Words (Average Syllables: {syllables})")
         plot.ylabel("# Times Missed")

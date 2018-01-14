@@ -40,9 +40,3 @@ def count_syllables(word):
         count += 1
 
     return count
-
-
-def phonics_frequency(list):
-    """Returns a tuple containing a count of the vowel combinations and
-     consoant blends."""
-    pass
