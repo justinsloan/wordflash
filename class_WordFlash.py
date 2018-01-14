@@ -8,6 +8,7 @@ import numpy
 import matplotlib
 matplotlib.use("TkAgg")
 import matplotlib.pyplot as plot
+from reportlab.pdfgen import canvas
 from phonics_lexer import *
 
 import os
@@ -200,6 +201,24 @@ class wordFlash():
         # Analyze Phonics
         lex = PhonicsLexer(split_words)
         phonics = lex.tokenize()
+
+        # Produce the PDF report
+        report = canvas.Canvas("report.pdf")
+        report.drawString(100, 775, "Word Flash")
+        report.drawString(100, 750, f"Student Stats for {student}")
+        report.drawString(300, 700, "Phonics Sounds & Consonant Blends")
+        place = 685
+        for word, count in phonics.items():
+            report.drawString(300, place, f"{word}: {str(count)}")
+            place -= 15
+        report.drawString(100, 700, f"Top {top} Missed Words")
+        place = 685
+        iteration = 0
+        for word in split_words:
+            report.drawString(100, place, f"{word}: {str(split_counts[iteration])}")
+            place -= 15
+            iteration += 1
+        report.save()
 
         # Create the graph
         x = numpy.arange(top)
