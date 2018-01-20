@@ -4,18 +4,16 @@
 
 from tkinter import *
 from tkinter import messagebox
+#from ascii_graph import Pyasciigraph
 import numpy
 import matplotlib
-from ascii_graph import Pyasciigraph
 matplotlib.use("TkAgg")
 import matplotlib.pyplot as plot
-from reportlab.pdfgen import canvas
-from phonics_lexer import *
-
-import os
+#from reportlab.pdfgen import canvas
 import random
 import time
 
+from phonics_lexer import *
 from wordanalysis import *
 from class_SettingsWindow import *
 from class_SelectStudentWindow import *
@@ -185,7 +183,7 @@ class wordFlash():
         split_words = []                     # Dict with only words from word_list
         word_dict = {}
 
-        # Prepare data lists
+        # Prepare Missed Words plot data lists
         for eachWord in word_list:
             count, word = eachWord.split(":")
             count = int(count)
@@ -205,60 +203,33 @@ class wordFlash():
         lex = PhonicsLexer(split_words)
         phonics = lex.tokenize()
 
-        # Produce the PDF report header
-        report = canvas.Canvas("report.pdf")
-        report.drawString(75, 775, "Word Flash")
-        report.drawString(75, 750, f"Student Stats for {student}")
+        # Prepare Phonics subplot data lists
+        phonics_count = []
+        for i in phonics:
+            phonics_count.append(phonics[i])
 
-        # Phonics Column (Right)
-        report.drawString(275, 700, "Phonics Sounds & Consonant Blends")
-        place = 685
-        for word, count in phonics.items():
-            report.drawString(275, place, f"{word}: {str(count)}")
-            place -= 15
-
-        # Missed Words Column (Left)
-        report.drawString(75, 700, f"Top {top} Missed Words")
-        place = 685
-        iteration = 0
-        for word in split_words:
-            report.drawString(75, place, f"{word}: {str(split_counts[iteration])}")
-            place -= 15
-            iteration += 1
-
-        # Create the Missed Words graph
-        place -= 15
-        report.setFont("Courier", 8)
-        graph = Pyasciigraph(line_length=70, min_graph_length=70, human_readable='si')
-        for line in graph.graph("Missed Words", word_dict.items()):
-            report.drawString(75, place, line)
-            place -= 15
-
-        # Create the Phonics Graph
-        place -= 15
-        graph = Pyasciigraph(line_length=70, min_graph_length=70, human_readable='si')
-        graph_text = ""
-        for line in graph.graph("Phonics Comparison", phonics.items()):
-            report.drawString(75, place, line)
-            place -= 15
-
-        # Save and present to the user
-        report.save()
-        os.system("open report.pdf")
-
-
-        '''
-        # Create the graph
+        # Create the Freq. Missed Words Plot
+        plot.subplot(1, 2, 1)
         x = numpy.arange(top)
-        plot.bar(x, split_counts)
-        plot.xticks(x, split_words)
-        #plot.figure(figsize=(6*3.13,4*3.13))
+        plot.barh(x, split_counts)
+        print(split_counts)
+        plot.yticks(x, split_words)
         plot.gcf().canvas.set_window_title(f"Student Stats for {student}")
         plot.title(f"Top {top} Missed Words")
-        plot.xlabel(f"Words (Average Syllables: {syllables})")
-        plot.ylabel("# Times Missed")
+        plot.ylabel(f"Words (Average Syllables: {syllables})")
+        plot.xlabel("# Times Missed")
+
+        # Create the Phonics Subplot
+        plot.subplot(1, 2, 2)
+        y = numpy.arange(len(phonics))
+        plot.barh(y, phonics_count)
+        plot.yticks(y, phonics.keys())
+        plot.title("Phonics Analysis")
+        plot.ylabel("Phonics")
+        plot.xlabel("Frequency")
+
+        # Show the plot
         plot.show()
-        '''
         
 
     def _btnSettings(self):
