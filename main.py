@@ -107,6 +107,8 @@ log = createLog()
 a, b = countAll(settings)
 log.info(b)               # Word List data summary
 
+win.resizable(False, False) #makes window not resizeable
+
 # Run the Application
 root = Tk()
 app = wordFlash(root, settings, stats, log)
